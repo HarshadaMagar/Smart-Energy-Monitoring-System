@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — Smart Energy{% endblock %}
+{% block content %}
+<section class="hero">
+    <h1 class="gradient-title">VoltWise</h1>
+    <p>Smart energy monitoring for domestic and enterprise users.</p>
+    <a class="button" href="{{ url_for('auth.login') }}">Open account portal</a>
+</section>
+{% endblock %}

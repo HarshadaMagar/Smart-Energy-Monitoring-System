@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — {{ appliance.name }}{% endblock %}
+{% block content %}
+<header class="dashboard-header enterprise">
+    <div><p class="eyebrow">Appliance monitoring</p><h1>{{ appliance.name }}</h1></div>
+    <a class="button button-secondary" href="{{ url_for('enterprise.dashboard') }}">Dashboard</a>
+</header>
+<section class="dashboard-grid">
+    <article class="dashboard-card"><h2>Type</h2><p>{{ appliance.appliance_type }}</p></article>
+    <article class="dashboard-card"><h2>Rated power</h2><p>{{ appliance.rated_power }} W</p></article>
+    <article class="dashboard-card"><h2>Connection</h2><p>{{ appliance.connection_status }}</p></article>
+    <article class="dashboard-card"><h2>Data source</h2><p>{{ readings[0].source if readings else 'No readings' }}</p></article>
+</section>
+<section class="dashboard-card">
+    <h2>Update appliance</h2>
+    <form method="post" action="{{ url_for('enterprise.update_appliance', appliance_id=appliance.id) }}" class="form-grid">
+        <label for="name">Name</label><input id="name" name="name" value="{{ appliance.name }}" required>
+        <label for="type">Type</label><input id="type" name="appliance_type" value="{{ appliance.appliance_type }}" required>
+        <label for="power">Rated power (W)</label><input id="power" name="rated_power" type="number" min="0.1" step="0.1" value="{{ appliance.rated_power }}" required>
+        <button class="button" type="submit">Save changes</button>
+    </form>
+    <form method="post" action="{{ url_for('enterprise.update_appliance_status', appliance_id=appliance.id) }}" class="inline-form">
+        <label for="connection-status">Connection status</label>
+        <select id="connection-status" name="connection_status"><option {{ 'selected' if appliance.connection_status == 'online' }}>online</option><option {{ 'selected' if appliance.connection_status == 'offline' }}>offline</option></select>
+        <button class="button button-secondary" type="submit">Update status</button>
+    </form>
+    <form method="post" action="{{ url_for('enterprise.delete_appliance', appliance_id=appliance.id) }}" onsubmit="return confirm('Delete this appliance?')">
+        <button class="button button-danger" type="submit">Delete appliance</button>
+    </form>
+</section>
+<section class="dashboard-card">
+    <h2>Reading history</h2>
+    <div class="table-scroll" tabindex="0">
+        <table>
+            <thead><tr><th>Recorded</th><th>Voltage (V)</th><th>Current (A)</th><th>Power (W)</th><th>Energy (kWh)</th><th>Source</th></tr></thead>
+            <tbody>
+            {% for reading in readings %}
+                <tr><td>{{ reading.recorded_at.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ reading.voltage }}</td><td>{{ reading.current }}</td><td>{{ reading.power }}</td><td>{{ reading.energy }}</td><td>{{ reading.source }}</td></tr>
+            {% else %}
+                <tr><td colspan="6">No readings recorded.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

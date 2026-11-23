@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — Administrator Dashboard{% endblock %}
+{% block content %}
+<header class="dashboard-header administrator">
+    <h1>Administrator Dashboard</h1>
+    <nav aria-label="Administrator navigation" class="admin-nav">
+        <a href="{{ url_for('admin.administrator_dashboard') }}">Overview</a>
+        <a href="{{ url_for('admin.users') }}">Users</a>
+        <a href="{{ url_for('admin.analytics') }}">Analytics</a>
+        <a href="{{ url_for('admin.alerts') }}">Alerts</a>
+        <a href="{{ url_for('admin.reports') }}">Reports</a>
+    </nav>
+</header>
+
+<section class="dashboard-grid" aria-label="Administrator summary">
+    <article class="dashboard-card"><h2>Registered Users</h2><strong>{{ registered_users }}</strong></article>
+    <article class="dashboard-card"><h2>Enterprise Users</h2><strong>{{ enterprise_users }}</strong></article>
+    <article class="dashboard-card"><h2>Domestic Users</h2><strong>{{ domestic_users }}</strong></article>
+    <article class="dashboard-card"><h2>Buildings</h2><strong>{{ buildings }}</strong></article>
+    <article class="dashboard-card"><h2>Appliances</h2><strong>{{ appliances }}</strong></article>
+    <article class="dashboard-card"><h2>Total Energy Consumption</h2><strong>{{ total_consumption }} kWh</strong></article>
+    <article class="dashboard-card"><h2>Estimated Bills</h2><strong>{{ estimated_bills }}</strong></article>
+    <article class="dashboard-card"><h2>Active Alerts</h2><strong>{{ active_alerts }}</strong></article>
+</section>
+{% endblock %}

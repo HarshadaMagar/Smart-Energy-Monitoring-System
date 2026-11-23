@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — Reports{% endblock %}
+{% block content %}
+<header class="dashboard-header administrator">
+    <h1>System Reports</h1>
+    <a class="button button-secondary" href="{{ url_for('admin.administrator_dashboard') }}">Back</a>
+</header>
+<section class="dashboard-card">
+    {% for report in reports %}
+        <p><strong>{{ report.title }}</strong> — {{ report.report_type }}</p>
+    {% else %}
+        <p>No system-wide reports.</p>
+    {% endfor %}
+</section>
+{% endblock %}

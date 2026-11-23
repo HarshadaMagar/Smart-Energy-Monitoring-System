@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — Alerts{% endblock %}
+{% block content %}
+<header class="dashboard-header administrator">
+    <h1>System Alerts</h1>
+    <a class="button button-secondary" href="{{ url_for('admin.administrator_dashboard') }}">Back</a>
+</header>
+<section class="dashboard-grid">
+    <article class="dashboard-card">
+        <h2>Active Alerts</h2>
+        {% for alert in active %}<p><strong>{{ alert.title }}</strong>: {{ alert.message }}</p>{% else %}<p>No active alerts.</p>{% endfor %}
+    </article>
+    <article class="dashboard-card">
+        <h2>Resolved Alerts</h2>
+        {% for alert in resolved %}<p><strong>{{ alert.title }}</strong>: {{ alert.message }}</p>{% else %}<p>No resolved alerts.</p>{% endfor %}
+    </article>
+</section>
+{% endblock %}

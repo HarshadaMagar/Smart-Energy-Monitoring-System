@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}VoltWise — Live Monitoring{% endblock %}
+{% block content %}
+<header class="dashboard-header enterprise">
+    <h1>Live Monitoring</h1>
+    <a class="button button-secondary" href="{{ url_for('enterprise.dashboard') }}">Dashboard</a>
+</header>
+{% for building in buildings %}
+    <section class="dashboard-card">
+        <h2>{{ building.name }}</h2>
+        {% for room in building.rooms %}
+            <h3>{{ room.name }} · Floor {{ room.floor_number }}</h3>
+            <div class="table-scroll" tabindex="0">
+                <table>
+                    <thead><tr><th>Appliance</th><th>Voltage</th><th>Current</th><th>Power</th><th>Energy</th><th>Source</th></tr></thead>
+                    <tbody>
+                    {% for appliance in room.appliances %}
+                        {% set latest = appliance.readings|sort(attribute='recorded_at')|last if appliance.readings else none %}
+                        <tr>
+                            <td><a href="{{ url_for('enterprise.appliance_detail', appliance_id=appliance.id) }}">{{ appliance.name }}</a></td>
+                            <td>{{ latest.voltage if latest else '—' }}</td>
+                            <td>{{ latest.current if latest else '—' }}</td>
+                            <td>{{ latest.power if latest else '—' }}</td>
+                            <td>{{ latest.energy if latest else '—' }}</td>
+                            <td>{{ latest.source if latest else 'No readings' }}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="6">No appliances in this room.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="muted">No rooms in this building.</p>
+        {% endfor %}
+    </section>
+{% else %}
+    <section class="dashboard-card"><p class="muted">Add a building to begin monitoring.</p></section>
+{% endfor %}
+{% endblock %}
